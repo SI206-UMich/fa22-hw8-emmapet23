@@ -53,7 +53,7 @@ def get_restaurant_data(db_filename):
         
     return lst
 
-    pass
+    # pass
 
 def barchart_restaurant_categories(db_filename):
     """
@@ -66,7 +66,7 @@ def barchart_restaurant_categories(db_filename):
     cur = conn.cursor()
 
     cats2 = cur.execute("SELECT restaurants.name, categories.category FROM categories JOIN restaurants ON restaurants.category_id=categories.id").fetchall()
-    print(cats2)
+    # print(cats2)
     dictionary = {}
     for i in range(len(cats2)):
         category = cats2[i][1]
@@ -74,15 +74,23 @@ def barchart_restaurant_categories(db_filename):
             dictionary[category]=1
         elif category in dictionary:
             dictionary[category]+=1
-    print(dictionary)
+    # print(dictionary)
 
-    values = dictionary.values()
-    for val in values:
-        plt.bar(x, height, width=0.8, bottom=None, *, align='center')
+    x_values = dictionary.keys()
+    y_values = dictionary.values()
+    plt.bar(x_values, y_values, width=0.8, bottom=None, align='center')
+    plt.xticks(rotation=90)
+    plt.legend()
+
+    plt.xlabel("Restaurant Categories")
+    plt.ylabel("Count")
+    plt.title("Counts of Restaurant Categories")
+
+    plt.show()
 
     return dictionary
 
-    pass
+    # pass
 
 #EXTRA CREDIT
 def highest_rated_category(db_filename):#Do this through DB as well
