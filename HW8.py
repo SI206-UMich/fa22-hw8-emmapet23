@@ -9,6 +9,50 @@ def get_restaurant_data(db_filename):
     dictionaries. The key:value pairs should be the name, category, building, and rating
     of each restaurant in the database.
     """
+    conn = sqlite3.connect(db_filename)
+    cur = conn.cursor()
+
+    names = cur.execute("SELECT id, name FROM restaurants").fetchall()
+    sort_names = sorted(names, key=lambda x:x[0])
+    # print(len(sort_names))
+    # print(sort_names)
+
+    cat_ids = cur.execute("SELECT categories.category FROM categories JOIN restaurants ON restaurants.category_id=categories.id").fetchall()
+    # print(len(cat_ids))
+    # print(cat_ids)
+
+    building_nums = cur.execute("SELECT buildings.building FROM buildings JOIN restaurants ON restaurants.building_id=buildings.id").fetchall()
+    # print(len(building_nums))
+    # print(building_nums)
+
+    ratings = cur.execute("SELECT rating FROM restaurants").fetchall()
+    # print(ratings)
+    # print(ratings)
+
+    lst = []
+
+
+    for i in range(len(sort_names)):
+
+        name = sort_names[i][1]
+        cat = cat_ids[i][0]
+        building_name = building_nums[i][0]
+        rate = ratings[i][0]
+
+        dictionary = {}
+        
+        dictionary["name"]= name
+        dictionary["category"]= cat
+        dictionary["building"] = building_name
+        dictionary["rating"] = rate
+
+        # print(dictionary)
+        lst.append(dictionary)
+    # print(lst)
+    # print(lst)
+        
+    return lst
+
     pass
 
 def barchart_restaurant_categories(db_filename):
@@ -17,6 +61,35 @@ def barchart_restaurant_categories(db_filename):
     restaurant categories and the values should be the number of restaurants in each category. The function should
     also create a bar chart with restaurant categories and the counts of each category.
     """
+
+    conn = sqlite3.connect(db_filename)
+    cur = conn.cursor()
+
+    cats2 = cur.execute("SELECT restaurants.name, categories.category FROM categories JOIN restaurants ON restaurants.category_id=categories.id").fetchall()
+    print(cats2)
+    dictionary = {}
+    for i in range(len(cats2)):
+        category = cats2[i][1]
+        if category not in dictionary:
+            dictionary[category]=1
+        elif category in dictionary:
+            dictionary[category]+=1
+    print(dictionary)
+    return dictionary
+
+    
+
+    # cats = cur.execute("SELECT category FROM categories").fetchall()
+    # print(cats)
+    # cats_list = []
+    # for i in range(len(cats)):
+    #     cat_i = cats[i][0]
+    #     cats_list.append(cat_i)
+    # print(cats_list)
+
+
+
+
     pass
 
 #EXTRA CREDIT
@@ -31,6 +104,7 @@ def highest_rated_category(db_filename):#Do this through DB as well
 
 #Try calling your functions here
 def main():
+    get_restaurant_data("South_U_Restaurants.db")
     pass
 
 class TestHW8(unittest.TestCase):
