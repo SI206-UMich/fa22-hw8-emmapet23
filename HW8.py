@@ -75,20 +75,12 @@ def barchart_restaurant_categories(db_filename):
         elif category in dictionary:
             dictionary[category]+=1
     print(dictionary)
+
+    values = dictionary.values()
+    for val in values:
+        plt.bar(x, height, width=0.8, bottom=None, *, align='center')
+
     return dictionary
-
-    
-
-    # cats = cur.execute("SELECT category FROM categories").fetchall()
-    # print(cats)
-    # cats_list = []
-    # for i in range(len(cats)):
-    #     cat_i = cats[i][0]
-    #     cats_list.append(cat_i)
-    # print(cats_list)
-
-
-
 
     pass
 
